@@ -1,0 +1,14 @@
+Iniciar git
+`
+git init
+`
+Instalar o npm
+`
+npm init -y
+`
+Instalar o typescript em desenvolvimento
+`
+npm i -D typescript @type/node
+`
+
+
