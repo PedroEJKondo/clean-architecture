@@ -10,5 +10,14 @@ Instalar o typescript em desenvolvimento
 `
 npm i -D typescript @type/node
 `
+Comando de configuração do typescript
+npx tsc --init
 
+#Instalar jest
+
+Comando de configuração do jest  
+npx ts-jest config:init
+`
+npm i -D jest @types/jest ts-jest
+`
 
