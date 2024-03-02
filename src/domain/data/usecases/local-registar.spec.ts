@@ -46,11 +46,7 @@ describe('LocalRegistarCompras', () => {
         const { sut, cacheStore } = makeSut()
         await sut.registar()
         expect(cacheStore.deleteCallsCount).toBe(1)
-    })
-
-    test('Should call delete with correct key', async () => {
-        const { sut, cacheStore } = makeSut()
-        await sut.registar()
         expect(cacheStore.key).toBe('compras')
     })
+ 
 })
