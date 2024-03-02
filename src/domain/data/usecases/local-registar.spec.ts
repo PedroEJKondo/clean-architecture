@@ -1,6 +1,5 @@
 class LocalRegistarCompras {
-    constructor(private readonly cacheStore: CacheStore) {
-    }
+    constructor(private readonly cacheStore: CacheStore) { }
 
     async registar(): Promise<void> {
         this.cacheStore.delete()
@@ -18,18 +17,32 @@ class CacheStoreSpy implements CacheStore {
     }
 }
 
+type SutTypes = {
+    sut: LocalRegistarCompras
+    cacheStore: CacheStoreSpy 
+}
+
+const makeSut = (): SutTypes => {
+    const cacheStore = new CacheStoreSpy();
+    const sut = new LocalRegistarCompras(cacheStore)
+
+    return {
+        sut,
+        cacheStore
+    }
+}
+
 describe('LocalRegistarCompras', () => {
 
     test('Should not delete cache on sut.init', () => {
-        const cacheStore = new CacheStoreSpy();
-        new LocalRegistarCompras(cacheStore)
+        const { cacheStore } = makeSut()
         expect(cacheStore.deleteCallsCount).toBe(0)
     })
 
     test('Should delete old cache on sut.init', async () => {
-        const cacheStore = new CacheStoreSpy();
-        const sut = new LocalRegistarCompras(cacheStore)
+        const { sut, cacheStore } = makeSut()
         await sut.registar()
         expect(cacheStore.deleteCallsCount).toBe(1)
     })
+
 })
