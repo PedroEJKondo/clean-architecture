@@ -4,15 +4,17 @@ import { LocalRegistarCompras } from '@/data/usecases'
 class CacheStoreSpy implements CacheStore {
     deleteCallsCount = 0
     insertCallsCount = 0
-    key: string = ""
+    deleteKey: string = ""
+    insertKey: string = ""
 
-    delete(key: string): void {
+    delete(deleteKey: string): void {
         this.deleteCallsCount++
-        this.key = key
+        this.deleteKey = deleteKey
     }
 
-    insert(input: string): void {
-        this.insertCallsCount = 0
+    insert(insertKey: string): void {
+        this.insertCallsCount++
+        this.insertKey = insertKey
     }
 }
 
@@ -42,15 +44,23 @@ describe('LocalRegistarCompras', () => {
         const { sut, cacheStore } = makeSut()
         await sut.registar()
         expect(cacheStore.deleteCallsCount).toBe(1)
-        expect(cacheStore.key).toBe('compras')
+        expect(cacheStore.deleteKey).toBe('compras')
     })
 
     test('Should not insert new Cache if delete fails', async () => {
         const { sut, cacheStore } = makeSut()
-        jest.spyOn(cacheStore, 'delete').mockImplementationOnce(()=>{throw new Error()})
+        jest.spyOn(cacheStore, 'delete').mockImplementationOnce(() => { throw new Error() })
         const promise = sut.registar()
         expect(cacheStore.insertCallsCount).toBe(0)
         expect(promise).rejects.toThrow()
+    })
+
+    test('Should insert new cache if deletion is successful', async () => {
+        const { sut, cacheStore } = makeSut()
+        await sut.registar()
+        expect(cacheStore.deleteCallsCount).toBe(1)
+        expect(cacheStore.insertCallsCount).toBe(1)
+        expect(cacheStore.insertKey).toBe('compras')
     })
 
 })

@@ -5,5 +5,8 @@ export class LocalRegistarCompras {
 
     async registar(): Promise<void> {
         this.cacheStore.delete('compras')
+        this.cacheStore.insert('compras')
     }
+
+    async insert():Promise<void>{}
 }
