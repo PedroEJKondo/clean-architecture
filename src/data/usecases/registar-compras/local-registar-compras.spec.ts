@@ -1,6 +1,6 @@
 import { CacheStore } from '@/data/protocols/cache'
 import { LocalRegistarCompras } from '@/data/usecases'
-import { RegistarCompras } from '@/domain'
+import { RegistarCompras } from '@/domain/usecases'
 
 class CacheStoreSpy implements CacheStore {
     deleteCallsCount = 0
