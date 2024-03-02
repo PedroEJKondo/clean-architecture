@@ -1,0 +1,1 @@
+export * from './registar-compras/local-registar-compras' 

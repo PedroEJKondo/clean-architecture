@@ -1,20 +1,11 @@
-class LocalRegistarCompras {
-    constructor(private readonly cacheStore: CacheStore) { }
-
-    async registar(): Promise<void> {
-        this.cacheStore.delete('compras')
-    }
-}
-
-interface CacheStore {
-    delete: (key:string) => void
-}
+import { CacheStore } from '@/data/protocols/cache'
+import { LocalRegistarCompras } from '@/data/usecases'
 
 class CacheStoreSpy implements CacheStore {
     deleteCallsCount = 0
     key: string = ""
 
-    delete(key:string): void {
+    delete(key: string): void {
         this.deleteCallsCount++
         this.key = key
     }
@@ -48,5 +39,5 @@ describe('LocalRegistarCompras', () => {
         expect(cacheStore.deleteCallsCount).toBe(1)
         expect(cacheStore.key).toBe('compras')
     })
- 
+
 })
