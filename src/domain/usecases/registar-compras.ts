@@ -2,7 +2,7 @@ export interface RegistarCompras {
     registar: (compras: Array<RegistarCompras.Input>) => Promise<void>
 }
 
-namespace RegistarCompras {
+export namespace RegistarCompras {
     export type Input = {
         id: string
         date: Date

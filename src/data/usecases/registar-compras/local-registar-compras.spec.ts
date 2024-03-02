@@ -1,22 +1,41 @@
 import { CacheStore } from '@/data/protocols/cache'
 import { LocalRegistarCompras } from '@/data/usecases'
+import { RegistarCompras } from '@/domain'
 
 class CacheStoreSpy implements CacheStore {
     deleteCallsCount = 0
     insertCallsCount = 0
     deleteKey: string = ""
     insertKey: string = ""
+    insertValue: Array<RegistarCompras.Input> = []
 
     delete(deleteKey: string): void {
         this.deleteCallsCount++
         this.deleteKey = deleteKey
     }
 
-    insert(insertKey: string): void {
+    insert(insertKey: string, value: any): void {
         this.insertCallsCount++
         this.insertKey = insertKey
+        this.insertValue = value
     }
 }
+
+const mockCompras = (): Array<RegistarCompras.Input> => [
+    {
+        id: '1',
+        date: new Date(),
+        value: 10,
+    }, {
+        id: '2',
+        date: new Date(),
+        value: 20,
+    }, {
+        id: '3',
+        date: new Date(),
+        value: 70,
+    }
+]
 
 type SutTypes = {
     sut: LocalRegistarCompras
@@ -42,7 +61,8 @@ describe('LocalRegistarCompras', () => {
 
     test('Should delete old cache on sut.init', async () => {
         const { sut, cacheStore } = makeSut()
-        await sut.registar()
+        const compras = mockCompras()
+        await sut.registar(compras)
         expect(cacheStore.deleteCallsCount).toBe(1)
         expect(cacheStore.deleteKey).toBe('compras')
     })
@@ -50,17 +70,20 @@ describe('LocalRegistarCompras', () => {
     test('Should not insert new Cache if delete fails', async () => {
         const { sut, cacheStore } = makeSut()
         jest.spyOn(cacheStore, 'delete').mockImplementationOnce(() => { throw new Error() })
-        const promise = sut.registar()
+        const compras = mockCompras()
+        const promise = sut.registar(compras)
         expect(cacheStore.insertCallsCount).toBe(0)
         expect(promise).rejects.toThrow()
     })
 
     test('Should insert new cache if deletion is successful', async () => {
         const { sut, cacheStore } = makeSut()
-        await sut.registar()
+        const compras = mockCompras()
+        await sut.registar(compras)
         expect(cacheStore.deleteCallsCount).toBe(1)
         expect(cacheStore.insertCallsCount).toBe(1)
         expect(cacheStore.insertKey).toBe('compras')
+        expect(cacheStore.insertValue).toEqual(compras)
     })
 
 })
