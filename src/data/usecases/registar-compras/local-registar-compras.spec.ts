@@ -1,34 +1,6 @@
-import { CacheStore } from '@/data/protocols/cache'
 import { LocalRegistarCompras } from '@/data/usecases'
-import { RegistarCompras } from '@/domain/usecases'
-import { mockCompras } from '@/data/tests/index'
-
-class CacheStoreSpy implements CacheStore {
-    deleteCallsCount = 0
-    insertCallsCount = 0
-    deleteKey: string = ""
-    insertKey: string = ""
-    insertValue: Array<RegistarCompras.Input> = []
-
-    delete(deleteKey: string): void {
-        this.deleteCallsCount++
-        this.deleteKey = deleteKey
-    }
-
-    insert(insertKey: string, value: any): void {
-        this.insertCallsCount++
-        this.insertKey = insertKey
-        this.insertValue = value
-    }
-
-    simulateDeleteError() : void {
-        jest.spyOn(CacheStoreSpy.prototype, 'delete').mockImplementationOnce(() => { throw new Error() })
-    }
-
-    simulateInsertError() : void {
-        jest.spyOn(CacheStoreSpy.prototype, 'insert').mockImplementationOnce(() => { throw new Error() })
-    }
-}
+import { mockCompras } from '@/data/tests'
+import { CacheStoreSpy } from '@/data/tests'
 
 type SutTypes = {
     sut: LocalRegistarCompras
