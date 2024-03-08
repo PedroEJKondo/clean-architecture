@@ -20,4 +20,6 @@ npx ts-jest config:init
 `
 npm i -D jest @types/jest ts-jest
 `
+`
+npm i -D faker @types/faker
 

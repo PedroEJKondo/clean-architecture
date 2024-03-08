@@ -1,6 +1,7 @@
 import { CacheStore } from '@/data/protocols/cache'
 import { LocalRegistarCompras } from '@/data/usecases'
 import { RegistarCompras } from '@/domain/usecases'
+import { mockCompras } from '@/data/tests/index'
 
 class CacheStoreSpy implements CacheStore {
     deleteCallsCount = 0
@@ -28,22 +29,6 @@ class CacheStoreSpy implements CacheStore {
         jest.spyOn(CacheStoreSpy.prototype, 'insert').mockImplementationOnce(() => { throw new Error() })
     }
 }
-
-const mockCompras = (): Array<RegistarCompras.Input> => [
-    {
-        id: '1',
-        date: new Date(),
-        value: 10,
-    }, {
-        id: '2',
-        date: new Date(),
-        value: 20,
-    }, {
-        id: '3',
-        date: new Date(),
-        value: 70,
-    }
-]
 
 type SutTypes = {
     sut: LocalRegistarCompras
