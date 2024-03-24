@@ -19,16 +19,16 @@ const makeSut = (): SutTypes => {
 
 describe('LocalSavePurchases', () => {
 
-    test('Should not delete cache on sut.init', () => {
+    test('Should not delete or insert cache on sut.init', () => {
         const { cacheStore } = makeSut()
-        expect(cacheStore.deleteCallsCount).toBe(0)
+        expect(cacheStore.messages).toEqual([])
     })
 
-    test('Should delete old cache on sut.init', async () => {
+    test('Should delete old cache on sut.save', async () => {
         const { sut, cacheStore } = makeSut()
         const compras = mockPurchases()
         await sut.save(compras)
-        expect(cacheStore.deleteCallsCount).toBe(1)
+        expect(cacheStore.messages).toEqual([CacheStoreSpy.Message.delete, CacheStoreSpy.Message.insert])
         expect(cacheStore.deleteKey).toBe('compras')
     })
 
@@ -37,7 +37,7 @@ describe('LocalSavePurchases', () => {
         cacheStore.simulateDeleteError()
         const compras = mockPurchases()
         const promise = sut.save(compras)
-        expect(cacheStore.insertCallsCount).toBe(0)
+        expect(cacheStore.messages).toEqual([CacheStoreSpy.Message.delete])
         expect(promise).rejects.toThrow()
     })
 
@@ -45,8 +45,7 @@ describe('LocalSavePurchases', () => {
         const { sut, cacheStore } = makeSut()
         const compras = mockPurchases()
         await sut.save(compras)
-        expect(cacheStore.deleteCallsCount).toBe(1)
-        expect(cacheStore.insertCallsCount).toBe(1)
+        expect(cacheStore.messages).toEqual([CacheStoreSpy.Message.delete, CacheStoreSpy.Message.insert])
         expect(cacheStore.insertKey).toBe('compras')
         expect(cacheStore.insertValue).toEqual(compras)
     })
@@ -56,6 +55,7 @@ describe('LocalSavePurchases', () => {
         cacheStore.simulateInsertError()
         const compras = mockPurchases()
         const promise = sut.save(compras)
+        expect(cacheStore.messages).toEqual([CacheStoreSpy.Message.delete, CacheStoreSpy.Message.insert])
         expect(promise).rejects.toThrow()
     })
 
