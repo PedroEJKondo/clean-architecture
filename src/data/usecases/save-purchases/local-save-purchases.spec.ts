@@ -27,7 +27,7 @@ describe('LocalSavePurchases', () => {
     test('Should delete old cache on sut.init', async () => {
         const { sut, cacheStore } = makeSut()
         const compras = mockPurchases()
-        await sut.registar(compras)
+        await sut.save(compras)
         expect(cacheStore.deleteCallsCount).toBe(1)
         expect(cacheStore.deleteKey).toBe('compras')
     })
@@ -36,7 +36,7 @@ describe('LocalSavePurchases', () => {
         const { sut, cacheStore } = makeSut()
         cacheStore.simulateDeleteError()
         const compras = mockPurchases()
-        const promise = sut.registar(compras)
+        const promise = sut.save(compras)
         expect(cacheStore.insertCallsCount).toBe(0)
         expect(promise).rejects.toThrow()
     })
@@ -44,7 +44,7 @@ describe('LocalSavePurchases', () => {
     test('Should insert new cache if deletion is successful', async () => {
         const { sut, cacheStore } = makeSut()
         const compras = mockPurchases()
-        await sut.registar(compras)
+        await sut.save(compras)
         expect(cacheStore.deleteCallsCount).toBe(1)
         expect(cacheStore.insertCallsCount).toBe(1)
         expect(cacheStore.insertKey).toBe('compras')
@@ -55,7 +55,7 @@ describe('LocalSavePurchases', () => {
         const { sut, cacheStore } = makeSut()
         cacheStore.simulateInsertError()
         const compras = mockPurchases()
-        const promise = sut.registar(compras)
+        const promise = sut.save(compras)
         expect(promise).rejects.toThrow()
     })
 

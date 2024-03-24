@@ -1,5 +1,5 @@
 export interface SavePurchases {
-    registar: (compras: Array<SavePurchases.Input>) => Promise<void>
+    save: (compras: Array<SavePurchases.Input>) => Promise<void>
 }
 
 export namespace SavePurchases {
