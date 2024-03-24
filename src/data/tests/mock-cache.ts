@@ -1,12 +1,12 @@
-import { RegistarCompras } from "@/domain/usecases"
 import { CacheStore } from "@/data/protocols/cache"
+import { SavePurchases } from "@/domain/usecases/save-purchases"
 
 export class CacheStoreSpy implements CacheStore {
     deleteCallsCount = 0
     insertCallsCount = 0
     deleteKey: string = ""
     insertKey: string = ""
-    insertValue: Array<RegistarCompras.Input> = []
+    insertValue: Array<SavePurchases.Input> = []
 
     delete(deleteKey: string): void {
         this.deleteCallsCount++

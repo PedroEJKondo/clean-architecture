@@ -1,7 +1,7 @@
-import { RegistarCompras } from "@/domain/usecases";
+import { SavePurchases } from '@/domain/usecases/save-purchases'
 import faker from 'faker'
 
-export const mockCompras = (): Array<RegistarCompras.Input> => [
+export const mockPurchases = (): Array<SavePurchases.Input> => [
     {
         id: faker.random.uuid() || "123",
         date: faker.date.recent(),

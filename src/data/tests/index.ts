@@ -1,2 +1,2 @@
-export * from './mock-comprado'
+export * from './mock-purchases'
 export * from './mock-cache'
